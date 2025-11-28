@@ -1,3 +1,4 @@
+
 import { SAPRecord, BankStatementData, ReconciliationResult } from '../types';
 
 // Helper to detect bank name from description text
@@ -29,7 +30,8 @@ export const reconcileData = (
   sapRecords.forEach(sap => {
     const bankName = detectBankName(sap.description);
     const sapAccMatch = sap.description.match(/(\d[\d\-\s]{8,}\d)/); // Simple regex to find account-like numbers in text
-    const sapAccNormalized = sapAccMatch ? normalizeAccount(sapAccMatch[0]) : '';
+    const sapAccRaw = sapAccMatch ? sapAccMatch[0] : '';
+    const sapAccNormalized = sapAccRaw ? normalizeAccount(sapAccRaw) : '';
 
     let matchedStatementIndex = -1;
 
@@ -59,7 +61,8 @@ export const reconcileData = (
         varianceAmount: Number((sap.balance - statement.endingBalance).toFixed(2)),
         detectedBankName: bankName,
         detectedBranch: sap.busA,
-        accountType: sap.accountType
+        accountType: sap.accountType,
+        detectedAccountNumber: statement.accountNumber
       });
     } else {
       results.push({
@@ -69,7 +72,8 @@ export const reconcileData = (
         varianceAmount: sap.balance,
         detectedBankName: bankName,
         detectedBranch: sap.busA,
-        accountType: sap.accountType
+        accountType: sap.accountType,
+        detectedAccountNumber: sapAccRaw || '-'
       });
     }
   });
@@ -84,7 +88,8 @@ export const reconcileData = (
         varianceAmount: -bs.endingBalance,
         detectedBankName: bs.bankName || 'Unknown',
         detectedBranch: 'N/A',
-        accountType: '-'
+        accountType: '-',
+        detectedAccountNumber: bs.accountNumber
       });
     }
   });

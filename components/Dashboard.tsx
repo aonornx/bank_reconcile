@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { ReconciliationResult } from '../types';
 import { CheckCircle, AlertTriangle, XCircle, Search, Filter } from 'lucide-react';
@@ -49,7 +50,8 @@ const Dashboard: React.FC<DashboardProps> = ({ results }) => {
       r.detectedBankName.toLowerCase().includes(searchLower) ||
       r.detectedBranch.toLowerCase().includes(searchLower) ||
       (r.sapRecord?.description || '').toLowerCase().includes(searchLower) ||
-      (r.bankData?.accountNumber || '').includes(searchLower);
+      (r.bankData?.accountNumber || '').includes(searchLower) ||
+      (r.detectedAccountNumber || '').includes(searchLower);
 
     return matchesFilter && matchesSearch;
   });
@@ -92,8 +94,8 @@ const Dashboard: React.FC<DashboardProps> = ({ results }) => {
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
                 <input 
                   type="text" 
-                  placeholder="ค้นหา (สาขา, ธนาคาร...)" 
-                  className="pl-9 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-100 w-full sm:w-48"
+                  placeholder="ค้นหา (สาขา, ธนาคาร, เลขที่บัญชี...)" 
+                  className="pl-9 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-100 w-full sm:w-56"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
@@ -118,6 +120,7 @@ const Dashboard: React.FC<DashboardProps> = ({ results }) => {
                   <th className="px-4 py-3">สถานะ (Status)</th>
                   <th className="px-4 py-3">สาขา</th>
                   <th className="px-4 py-3">ธนาคาร</th>
+                  <th className="px-4 py-3">เลขที่บัญชี</th>
                   <th className="px-4 py-3 text-center">ประเภทบัญชี</th>
                   <th className="px-4 py-3 text-right">SAP Balance</th>
                   <th className="px-4 py-3 text-right">Bank Balance</th>
@@ -134,6 +137,7 @@ const Dashboard: React.FC<DashboardProps> = ({ results }) => {
                       </td>
                       <td className="px-4 py-3 font-medium text-slate-700">{row.detectedBranch}</td>
                       <td className="px-4 py-3 text-slate-600">{row.detectedBankName}</td>
+                      <td className="px-4 py-3 font-mono text-slate-600">{row.detectedAccountNumber}</td>
                       <td className="px-4 py-3 text-center">
                         {row.accountType !== '-' ? (
                           <span className={`px-2 py-0.5 rounded text-xs font-bold ${
@@ -161,7 +165,7 @@ const Dashboard: React.FC<DashboardProps> = ({ results }) => {
                   ))
                 ) : (
                    <tr>
-                     <td colSpan={8} className="px-4 py-8 text-center text-slate-400">ไม่พบข้อมูลตามเงื่อนไข</td>
+                     <td colSpan={9} className="px-4 py-8 text-center text-slate-400">ไม่พบข้อมูลตามเงื่อนไข</td>
                    </tr>
                 )}
               </tbody>

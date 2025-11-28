@@ -1,3 +1,4 @@
+
 export interface SAPRecord {
   id: string;
   busA: string; // Branch/Business Area
@@ -24,6 +25,7 @@ export interface ReconciliationResult {
   detectedBankName: string; // Extracted from SAP Description
   detectedBranch: string; // BusA
   accountType: string; // C/A or S/A
+  detectedAccountNumber: string; // New field for display
 }
 
 export enum FileType {
