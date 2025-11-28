@@ -1,0 +1,5 @@
+{
+  "name": "AutoReconcile AI",
+  "description": "ระบบตรวจสอบยอดคงเหลือและกระทบยอดบัญชีอัตโนมัติด้วย AI เชื่อมโยงข้อมูลจาก SAP และ Statement ธนาคาร (PDF/Word) เพื่อความแม่นยำและรวดเร็ว",
+  "requestFramePermissions": []
+}
